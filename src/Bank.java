@@ -1,23 +1,33 @@
 import java.util.Scanner;
 
 public class Bank {
+    Bank() {
+    };
 
-    public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
+    Scanner in = new Scanner(System.in);
 
-        bankEntryMessage(); // printing informations
+    public void startBankApplication() {
+        bankEntryMessage(); // printing some start informations
+        userChoiceMenu();
+    }
 
+    private void userChoiceMenu() {
         // handle user commands
         boolean quit = false;
         String menuItem;
 
         do {
-            System.out.print("Choose menu item: ");
             menuItem = in.nextLine();
 
             switch (menuItem.toLowerCase()) {
                 case "help":
                     helpCommand();
+                    break;
+                case "add":
+                    //adding user
+                    break;
+                case "delete":
+                    //delete user
                     break;
 
                 case "exit":
@@ -34,16 +44,24 @@ public class Bank {
 
     }
 
-
-    private static void bankEntryMessage() {
-        System.out.println("This is bank management application\n" +
+    private void bankEntryMessage() {
+        System.out.println("\nThis is bank management application\n" +
                 "For more informations and options write: help\n" +
                 "For exit write: exit\n");
     }
 
-    private static void helpCommand() {
-        System.out.println("All available commands:\n" +
+    private void helpCommand() {
+        System.out.println("All available commands:\n\n" +
                 "help - displays all available commands\n" +
-                "exit- application closing command");
+                "add - add new user\n" +
+                "delete - delete selected user\n" +
+                "exit - application closing command");
+    }
+
+
+    public static void main(String[] args) {
+        Bank myBank = new Bank();
+        myBank.startBankApplication();
+
     }
 }
