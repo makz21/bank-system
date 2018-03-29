@@ -1,10 +1,12 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Bank {
     Bank() {
     };
 
-    Scanner in = new Scanner(System.in);
+    Scanner input = new Scanner(System.in);
+    ArrayList<Account> bankUsers = new ArrayList<Account>();
 
     public void startBankApplication() {
         bankEntryMessage(); // printing some start informations
@@ -17,14 +19,14 @@ public class Bank {
         String menuItem;
 
         do {
-            menuItem = in.nextLine();
+            menuItem = input.nextLine();
 
             switch (menuItem.toLowerCase()) {
                 case "help":
                     helpCommand();
                     break;
                 case "add":
-                    //adding user
+                    addNewUser();       //adding user
                     break;
                 case "delete":
                     //delete user
@@ -57,6 +59,34 @@ public class Bank {
                 "delete - delete selected user\n" +
                 "exit - application closing command");
     }
+
+    private void addNewUser(){
+        String tmpNameFirst, tmpNameLast, tmpPesel, tmpAdress;
+        double tmpBalance;
+        long tmpAccNumber;
+
+        System.out.println("Enter information about the new user\n");
+        System.out.println("Account Holders First Name :: ");
+        tmpNameFirst = input.nextLine();
+        System.out.println("Account Holders Last Name :: ");
+        tmpNameLast = input.nextLine();
+        System.out.println("Account Holders PESEL :: ");
+        tmpPesel = input.nextLine();
+        System.out.println("Account Holders Adress :: ");
+        tmpAdress = input.nextLine();
+
+
+
+        System.out.println("AccountNumber :: ");
+        tmpAccNumber = input.nextLong();
+        System.out.println("Opening Balance :: ");
+        tmpBalance = input.nextDouble();
+
+        bankUsers.add(new Account(new Client( tmpNameFirst, tmpNameLast, tmpPesel, tmpAdress), tmpAccNumber, tmpBalance));
+        System.out.println("\nNew client added!");
+
+    }
+
 
 
     public static void main(String[] args) {
