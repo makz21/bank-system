@@ -33,11 +33,10 @@ public class Client {
 
     @Override
     public String toString() {
-        return "Client{" +
-                "nameFirst='" + nameFirst + '\'' +
-                ", nameLast='" + nameLast + '\'' +
-                ", numberPesel='" + numberPesel + '\'' +
-                ", clientAdress='" + clientAdress + '\'' +
-                '}';
+        return "Client: " + nameFirst +
+                " " + nameLast +
+                " PESEL: " + numberPesel +
+                " Adress: " + clientAdress;
+
     }
 }

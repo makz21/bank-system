@@ -8,7 +8,7 @@ public class Bank {
     int usersCounter;
 
     Scanner input = new Scanner(System.in);
-    ArrayList<Account> bankUsers = new ArrayList<Account>();
+    ArrayList<Account> bankUsers = new ArrayList<>();
 
     public void startBankApplication() {
         bankEntryMessage(); // printing some start informations
@@ -37,6 +37,15 @@ public class Bank {
                 case "delete":
                     //delete user
                         break;
+                case "deposit":
+                    //deposit money
+                    break;
+                case "withdraw":
+                    //withdraw money
+                    break;
+                case "transfer":
+                    //transfer money
+                    break;
                 case "exit":
                     quit = true;
                     break;
@@ -63,6 +72,9 @@ public class Bank {
                 "add - add new user\n" +
                 "all - display all users\n" +
                 "delete - delete selected user\n" +
+                "deposit - deposit funds into an account\n" +
+                "withdraw - withdraw funds from an account \n" +
+                "transfer - transfer funds between two accounts\n" +
                 "exit - application closing command");
     }
 
@@ -95,11 +107,13 @@ public class Bank {
     }
 
     private void displayAllClients(){
+        int k=0;
         if(bankUsers.isEmpty()){
             System.out.println("There is no clients in base!\n==========================================");
         }else {
             for (Account str : bankUsers) {
-                System.out.println(str);
+                System.out.println(k + ") " + str);
+                k++;
             }
         }
     }

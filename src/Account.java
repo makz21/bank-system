@@ -63,10 +63,9 @@ public class Account
 
     @Override
     public String toString() {
-        return "Account{" +
-                "person=" + person +
-                ", balance=" + balance +
-                ", accountNumber=" + accountNumber +
-                '}';
+        return person +
+                " Balance: " + balance + '$' +
+                " Account Number: " + accountNumber;
+
     }
 }
