@@ -3,9 +3,10 @@ import java.util.Scanner;
 
 public class Bank {
     Bank() {
-    };
+    }
 
-    int usersCounter;
+    ;
+
 
     Scanner input = new Scanner(System.in);
     ArrayList<Account> bankUsers = new ArrayList<>();
@@ -35,8 +36,8 @@ public class Bank {
                     displayAllClients(); //display all users
                     break;
                 case "delete":
-                    //delete user
-                        break;
+                    deleteUser();    //delete user
+                    break;
                 case "deposit":
                     //deposit money
                     break;
@@ -104,17 +105,32 @@ public class Bank {
         bankUsers.add(new Account(new Client(tmpNameFirst, tmpNameLast, tmpPesel, tmpAdress), tmpAccNumber, tmpBalance));
         System.out.println("New client successfully added!");
 
+
     }
 
-    private void displayAllClients(){
-        int k=0;
-        if(bankUsers.isEmpty()){
+    private void displayAllClients() {
+        int k = 0;
+        if (bankUsers.isEmpty()) {
             System.out.println("There is no clients in base!\n==========================================");
-        }else {
+        } else {
             for (Account str : bankUsers) {
-                System.out.println(k + ") " + str);
+                System.out.println("ClientID: " + k + " || " + str);
                 k++;
             }
+        }
+    }
+
+    private void deleteUser() {
+
+        if (bankUsers.isEmpty()) {
+            System.out.println("Nothing to delete! Base is empty\n");
+        } else {
+            displayAllClients();
+            System.out.println("==========================================\n" +
+                    "Enter clientID number you want to delete\n");
+            bankUsers.remove(input.nextInt());
+            input.nextLine();
+            System.out.println("Client account deleted\n");
         }
     }
 
