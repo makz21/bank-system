@@ -3,7 +3,11 @@ import java.util.Scanner;
 
 public class Bank {
     Bank() {
-    };
+    }
+
+    ;
+
+    int usersCounter;
 
     Scanner input = new Scanner(System.in);
     ArrayList<Account> bankUsers = new ArrayList<Account>();
@@ -11,6 +15,7 @@ public class Bank {
     public void startBankApplication() {
         bankEntryMessage(); // printing some start informations
         userChoiceMenu();
+        System.exit(0);
     }
 
     private void userChoiceMenu() {
@@ -26,12 +31,14 @@ public class Bank {
                     helpCommand();
                     break;
                 case "add":
-                    addNewUser();       //adding user
+                    addNewUser();       //adding new user user
+                    break;
+                case "all":
+                    //display all users
                     break;
                 case "delete":
                     //delete user
                     break;
-
                 case "exit":
                     quit = true;
                     break;
@@ -47,25 +54,27 @@ public class Bank {
     }
 
     private void bankEntryMessage() {
-        System.out.println("\nThis is bank management application\n" +
+        System.out.println("\nThis is bank management application\n==========================================\n" +
                 "For more informations and options write: help\n" +
                 "For exit write: exit\n");
     }
 
     private void helpCommand() {
-        System.out.println("All available commands:\n\n" +
+        System.out.println("All available commands:\n==========================================\n" +
                 "help - displays all available commands\n" +
                 "add - add new user\n" +
+                "all - display all users\n" +
                 "delete - delete selected user\n" +
                 "exit - application closing command");
     }
 
-    private void addNewUser(){
+    private void addNewUser() {
         String tmpNameFirst, tmpNameLast, tmpPesel, tmpAdress;
         double tmpBalance;
         long tmpAccNumber;
 
-        System.out.println("Enter information about the new user\n");
+
+        System.out.println("\nEnter information about the new user\n==========================================");
         System.out.println("Account Holders First Name :: ");
         tmpNameFirst = input.nextLine();
         System.out.println("Account Holders Last Name :: ");
@@ -76,17 +85,16 @@ public class Bank {
         tmpAdress = input.nextLine();
 
 
-
         System.out.println("AccountNumber :: ");
         tmpAccNumber = input.nextLong();
         System.out.println("Opening Balance :: ");
         tmpBalance = input.nextDouble();
+        input.nextLine();
 
-        bankUsers.add(new Account(new Client( tmpNameFirst, tmpNameLast, tmpPesel, tmpAdress), tmpAccNumber, tmpBalance));
-        System.out.println("\nNew client added!");
+        bankUsers.add(new Account(new Client(tmpNameFirst, tmpNameLast, tmpPesel, tmpAdress), tmpAccNumber, tmpBalance));
+        System.out.println("New client successfully added!");
 
     }
-
 
 
     public static void main(String[] args) {
