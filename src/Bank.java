@@ -3,9 +3,7 @@ import java.util.Scanner;
 
 public class Bank {
     Bank() {
-    }
-
-    ;
+    };
 
     int usersCounter;
 
@@ -34,11 +32,11 @@ public class Bank {
                     addNewUser();       //adding new user user
                     break;
                 case "all":
-                    //display all users
+                    displayAllClients(); //display all users
                     break;
                 case "delete":
                     //delete user
-                    break;
+                        break;
                 case "exit":
                     quit = true;
                     break;
@@ -94,6 +92,16 @@ public class Bank {
         bankUsers.add(new Account(new Client(tmpNameFirst, tmpNameLast, tmpPesel, tmpAdress), tmpAccNumber, tmpBalance));
         System.out.println("New client successfully added!");
 
+    }
+
+    private void displayAllClients(){
+        if(bankUsers.isEmpty()){
+            System.out.println("There is no clients in base!\n==========================================");
+        }else {
+            for (Account str : bankUsers) {
+                System.out.println(str);
+            }
+        }
     }
 
 
