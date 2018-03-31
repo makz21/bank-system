@@ -1,7 +1,7 @@
 # bank-system
 Bank management application 
 
-Program for servicing the banking system. The program is intended for bank employees. Work with the program takes place in text mode. User data stored in a file on the disk.
+Program for management the banking system. The program is intended for bank employees. Work with the program takes place in text mode. User data stored in a file on the disk.
 
 The program allows you to: 
 
