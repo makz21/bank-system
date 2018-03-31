@@ -225,6 +225,10 @@ public class Bank {
         }
     }
 
+    private void makeTransfer(){
+
+    }
+
 
     public static void main(String[] args) {
         Bank myBank = new Bank();
