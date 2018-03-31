@@ -210,12 +210,12 @@ public class Bank {
             double tmpAmount = input.nextDouble();
 
             if (confirmOperation()) {
-               if(bankUsers.get(userToWithdraw).withdrawFunds(tmpAmount)){
-                System.out.println("Withdraw operation completed successfully\n");
-               }else{
-                   System.out.println("You can't withdraw: " + tmpAmount + "$ " +
-                           "You can withdraw max: " + bankUsers.get(userToWithdraw).getBalance() + "$\n");
-               }
+                if (bankUsers.get(userToWithdraw).withdrawFunds(tmpAmount)) {
+                    System.out.println("Withdraw operation completed successfully\n");
+                } else {
+                    System.out.println("You can't withdraw: " + tmpAmount + "$ " +
+                            "You can withdraw max: " + bankUsers.get(userToWithdraw).getBalance() + "$\n");
+                }
 
             } else {
                 System.out.println("Operation aborted\n");
@@ -225,7 +225,17 @@ public class Bank {
         }
     }
 
-    private void makeTransfer(){
+    private void makeTransfer() {
+
+        System.out.println("Enter sender's account number\n");
+        long senderAccNumber = input.nextLong();
+        input.nextLine();
+        System.out.println("Enter recipient's account number\n");
+        long recipientAccNumber = input.nextLong();
+        input.nextLine();
+        System.out.println("Enter the amount you want to transfer\n");
+        double tmpAmount = input.nextDouble();
+
 
     }
 
@@ -236,3 +246,4 @@ public class Bank {
 
     }
 }
+
