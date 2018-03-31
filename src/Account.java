@@ -52,7 +52,6 @@ public class Account
 
     public long getAccountNumber() // returns account number //
     {
-
         return accountNumber;
     }
 
@@ -66,6 +65,5 @@ public class Account
         return person +
                 " Balance: " + balance + '$' +
                 " Account Number: " + accountNumber;
-
     }
 }
