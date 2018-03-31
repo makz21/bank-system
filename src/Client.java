@@ -3,7 +3,8 @@ public class Client {
     private String nameFirst, nameLast, numberPesel, clientAdress;
 
     // default constructor
-    Client() {}
+    Client() {
+    }
 
     // Overload Constructor
     Client(String name_f, String name_lst, String pesel, String adress) {

@@ -27,6 +27,7 @@ public class Bank {
                     if (confirmOperation()) {
                         displayHelpCommands();
                     } else {
+                        System.out.println("Operation aborted\n");
                         break;
                     }
                     break;
@@ -37,17 +38,18 @@ public class Bank {
                     if (confirmOperation()) {
                         displayAllClients();
                     } else {
+                        System.out.println("Operation aborted\n");
                         break;
                     }
                     break;
                 case "delete":                      // delete chosen user
                     deleteUser();
                     break;
-                case "deposit":
-                    //deposit money
+                case "deposit":                     // deposit money
+                    makeDeposit();
                     break;
-                case "withdraw":
-                    //withdraw money
+                case "withdraw":                    //withdraw money
+                    makeWithdraw();
                     break;
                 case "transfer":
                     //transfer money
@@ -56,6 +58,7 @@ public class Bank {
                     if (confirmOperation()) {
                         quit = true;
                     } else {
+                        System.out.println("Operation aborted\n");
                         break;
                     }
                     break;
@@ -132,6 +135,7 @@ public class Bank {
             bankUsers.add(new Account(new Client(tmpNameFirst, tmpNameLast, tmpPesel, tmpAdress), tmpAccNumber, tmpBalance));
             System.out.println("New client successfully added!");
         } else {
+            System.out.println("Operation aborted\n");
             return;
         }
     }
@@ -139,7 +143,7 @@ public class Bank {
     private void displayAllClients() {
         int k = 0;
         if (bankUsers.isEmpty()) {
-            System.out.println("There is no clients in base!\n==========================================");
+            System.out.println("There is no clients in base!\n=================================================================");
         } else {
             for (Account str : bankUsers) {
                 System.out.println("ClientID: " + k + " || " + str);
@@ -147,7 +151,6 @@ public class Bank {
             }
         }
     }
-
 
     private void deleteUser() {
         if (bankUsers.isEmpty()) {
@@ -162,8 +165,63 @@ public class Bank {
                 bankUsers.remove(userToDelete);
                 System.out.println("Client account deleted\n");
             } else {
+                System.out.println("Operation aborted\n");
                 return;
             }
+        }
+    }
+
+    private void makeDeposit() {
+        if (bankUsers.isEmpty()) {
+            System.out.println("You can not deposit funds, client base is empty!\n");
+        } else {
+            displayAllClients();
+
+            System.out.println("=================================================================\n" +
+                    "Enter client ID number you want to deposit funds\n");
+            int userToDeposit = input.nextInt();
+            input.nextLine();
+
+            System.out.println("Enter amount you want to deposit\n");
+            double tmpAmount = input.nextDouble();
+            input.nextLine();
+            if (confirmOperation()) {
+                bankUsers.get(userToDeposit).depositFunds(tmpAmount);
+                System.out.println("Deposit operation completed successfully\n");
+            } else {
+                System.out.println("Operation aborted\n");
+                return;
+            }
+
+        }
+    }
+
+    private void makeWithdraw() {
+        if (bankUsers.isEmpty()) {
+            System.out.println("You can not withdraw funds, client base is empty!\n");
+        } else {
+            displayAllClients();
+            System.out.println("=================================================================\n" +
+                    "Enter client ID number you want to withdraw funds\n");
+            int userToWithdraw = input.nextInt();
+            input.nextLine();
+
+            System.out.println("Enter amount you want to withdraw\n");
+            double tmpAmount = input.nextDouble();
+
+            if (confirmOperation()) {
+               if(bankUsers.get(userToWithdraw).withdrawFunds(tmpAmount)){
+                System.out.println("Withdraw operation completed successfully\n");
+               }else{
+                   System.out.println("You can't withdraw: " + tmpAmount + "$ " +
+                           "You can withdraw max: " + bankUsers.get(userToWithdraw).getBalance() + "$\n");
+               }
+
+            } else {
+                System.out.println("Operation aborted\n");
+                return;
+            }
+
         }
     }
 

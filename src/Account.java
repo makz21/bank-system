@@ -25,14 +25,14 @@ public class Account
 
     // function to withdraw funds from an account //
     // checks to see whether funds are available. //
-    public int withdrawFunds( double p_amount)
+    public boolean withdrawFunds( double p_amount)
     {
         // check if enough funds
         if ( p_amount > balance )
-            return -1;
+            return false;
         else
             balance -= p_amount;
-        return 0;
+        return true;
     }
 
 
