@@ -52,7 +52,7 @@ public class Bank {
                     makeWithdraw();
                     break;
                 case "transfer":
-                    //transfer money
+                    makeTransfer(); //transfer money
                     break;
                 case "exit":
                     if (confirmOperation()) {
@@ -235,8 +235,36 @@ public class Bank {
         input.nextLine();
         System.out.println("Enter the amount you want to transfer\n");
         double tmpAmount = input.nextDouble();
+        input.nextLine();
 
+        boolean transfer = true;
 
+        for (int i = 0; i < bankUsers.size(); i++) {
+            if (bankUsers.get(i).getAccountNumber() == senderAccNumber) {
+                if (bankUsers.get(i).getBalance() < tmpAmount) {
+                    transfer = false;
+                    System.out.println("You can't transfer more than current saldo("
+                            + bankUsers.get(i).getBalance() + "$)\n");
+                } else {
+                    bankUsers.get(i).setBalance(bankUsers.get(i).getBalance() - tmpAmount);
+                    break;
+                }
+
+            }
+        }
+        if (transfer) {
+            for (int i = 0; i < bankUsers.size(); i++) {
+                if (bankUsers.get(i).getAccountNumber() == recipientAccNumber) {
+                    bankUsers.get(i).setBalance(bankUsers.get(i).getBalance() + tmpAmount);
+                    System.out.println("Transfer completed successfully");
+                    break;
+                }
+
+            }
+
+        }else{
+            System.out.println("Transfer failed");
+        }
     }
 
 
