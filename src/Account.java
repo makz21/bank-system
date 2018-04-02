@@ -4,17 +4,20 @@ public class Account
     // accessible only via methods/functions as //
     // they are private and subsequently can    //
     // only be changed via member functions.    //
+    Account(){
+
+    }
 
     private Client person;            // account holders client
     private double balance;           // current account balance
-    private long accountNumber;      // account number
+    private int clientID;      // account number
 
     // Constuctor for Objects of type account //
-    Account( Client c_client, long c_num, double c_balance)
+    Account( Client c_client, int c_num, double c_balance)
     {
         person = c_client;
         balance = c_balance;
-        accountNumber = c_num;
+        clientID = c_num;
     }
 
     // Function to deposit funds into an account //
@@ -53,9 +56,9 @@ public class Account
         return person.getName();
     }
 
-    public long getAccountNumber() // returns account number //
+    public int getClientID() // returns account number //
     {
-        return accountNumber;
+        return clientID;
     }
 
     public Client getClient()
@@ -67,6 +70,6 @@ public class Account
     public String toString() {
         return person +
                 " Balance: " + balance + '$' +
-                " Account Number: " + accountNumber;
+                " ClientID: " + clientID;
     }
 }
