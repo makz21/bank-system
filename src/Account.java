@@ -4,20 +4,17 @@ public class Account
     // accessible only via methods/functions as //
     // they are private and subsequently can    //
     // only be changed via member functions.    //
-    Account(){
-
-    }
 
     private Client person;            // account holders client
     private double balance;           // current account balance
-    private int clientID;      // account number
+    //private int clientID;      // account number
 
     // Constuctor for Objects of type account //
-    Account( Client c_client, int c_num, double c_balance)
+    Account( Client c_client, double c_balance)
     {
         person = c_client;
         balance = c_balance;
-        clientID = c_num;
+
     }
 
     // Function to deposit funds into an account //
@@ -58,7 +55,7 @@ public class Account
 
     public int getClientID() // returns account number //
     {
-        return clientID;
+        return person.getClientID();
     }
 
     public Client getClient()
@@ -69,7 +66,6 @@ public class Account
     @Override
     public String toString() {
         return person +
-                " Balance: " + balance + '$' +
-                " ClientID: " + clientID;
+                " Balance: " + balance + '$';
     }
 }
