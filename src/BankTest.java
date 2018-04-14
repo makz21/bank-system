@@ -1,5 +1,15 @@
+import com.google.gson.Gson;
+import org.json.JSONObject;
+import com.google.gson.reflect.TypeToken;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import java.io.FileReader;
+import java.io.Reader;
+
 
 public class BankTest {
     BankTest() {
@@ -7,11 +17,13 @@ public class BankTest {
 
     private int userID = 0;
 
-
     Scanner input = new Scanner(System.in);
     HashMap<Integer, Account> bankUsers = new HashMap<>();
+    Gson gson = new Gson();
+
 
     private void startBankApplication() {
+        loadBankUsersFromJsontoHashMap();
         bankEntryMessage(); // printing some start informations
         userChoiceMenu();
     }
@@ -58,6 +70,7 @@ public class BankTest {
                 case "exit":
                     if (confirmOperation()) {
                         quit = true;
+                        saveBankUsersToJson();
                     } else {
                         System.out.println("Operation aborted\n");
                         break;
@@ -142,7 +155,8 @@ public class BankTest {
         input.nextLine();
 
         if (confirmOperation()) {
-            bankUsers.put(userID, (new Account(new Client(tmpNameFirst, tmpNameLast, tmpPesel, tmpAdress, userID ), tmpBalance)));
+            Account newUser = new Account(new Client(tmpNameFirst, tmpNameLast, tmpPesel, tmpAdress, userID), tmpBalance);
+            bankUsers.put(userID, newUser);
             System.out.println("New client successfully added!");
             userID++;
         } else {
@@ -275,6 +289,24 @@ public class BankTest {
             }
         }
     }
+
+    private void saveBankUsersToJson() {
+        try (FileWriter writer = new FileWriter("bank_users.json")) {
+            gson.toJson(bankUsers, writer);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadBankUsersFromJsontoHashMap(){
+        try (Reader reader = new FileReader("bank_users.json")) {
+            bankUsers = gson.fromJson(reader, new TypeToken<HashMap<Integer, Object>>(){}.getType());
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        }
 
 
     public static void main(String[] args) {
