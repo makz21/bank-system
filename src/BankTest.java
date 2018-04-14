@@ -1,6 +1,7 @@
 import com.google.gson.Gson;
 import org.json.JSONObject;
 import com.google.gson.reflect.TypeToken;
+
 import java.util.HashMap;
 import java.util.Scanner;
 import java.io.File;
@@ -155,7 +156,7 @@ public class BankTest {
         input.nextLine();
 
         if (confirmOperation()) {
-            Account newUser = new Account(new Client(tmpNameFirst, tmpNameLast, tmpPesel, tmpAdress, userID), tmpBalance);
+           Account newUser = new Account(new Client(tmpNameFirst, tmpNameLast, tmpPesel, tmpAdress, userID), tmpBalance);
             bankUsers.put(userID, newUser);
             System.out.println("New client successfully added!");
             userID++;
@@ -299,14 +300,15 @@ public class BankTest {
         }
     }
 
-    private void loadBankUsersFromJsontoHashMap(){
+    private void loadBankUsersFromJsontoHashMap() {
         try (Reader reader = new FileReader("bank_users.json")) {
-            bankUsers = gson.fromJson(reader, new TypeToken<HashMap<Integer, Object>>(){}.getType());
-        }catch (IOException e) {
+            bankUsers = gson.fromJson(reader, new TypeToken<HashMap<Integer, Account>>() {
+            }.getType());
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        }
+    }
 
 
     public static void main(String[] args) {
