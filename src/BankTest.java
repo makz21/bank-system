@@ -180,9 +180,6 @@ public class BankTest {
         int key = input.nextInt();
         input.nextLine();
         Account selectedUser = bankUsers.get(key);
-//        if (selectedUser == null) {
-//            return null;
-//        }
         return selectedUser;
     }
 
