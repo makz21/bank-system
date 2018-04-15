@@ -44,12 +44,20 @@ public class Account
         this.balance = balance;
     }
 
-    public String getName() // returns account holders name //
+    public String getFullName() // returns account holders name //
     {
         // Access our client object (person)
         // then access getName() function
         // of Client class
-        return person.getName();
+        return person.getFullName();
+    }
+
+    public String getNameFirst(){
+        return person.getNameFirst();
+    }
+
+    public String getNameLast() {
+        return person.getNameLast();
     }
 
     public int getClientID() // returns account number //

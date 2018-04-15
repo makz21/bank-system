@@ -15,8 +15,16 @@ public class Client {
     }
 
     // method to return full name
-    String getName() {
+    public String getFullName() {
         return (nameFirst + " " + nameLast);
+    }
+
+    public String getNameFirst() {
+        return nameFirst;
+    }
+
+    public String getNameLast() {
+        return nameLast;
     }
 
     void setFirstName(String n_new) {
@@ -27,7 +35,7 @@ public class Client {
         nameLast = n_new;
     }
 
-    String getClientAdress() {
+    public String getClientAdress() {
         return clientAdress;
     }
 

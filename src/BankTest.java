@@ -1,19 +1,13 @@
 import com.google.gson.Gson;
-import org.json.JSONObject;
 import com.google.gson.reflect.TypeToken;
 
-import java.util.stream.Stream;
-import java.util.HashMap;
-import java.util.Scanner;
-import java.util.Comparator;
-import java.util.Collection;
-
-import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-
-import java.io.FileReader;
 import java.io.Reader;
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.stream.Collectors;
 
 
 public class BankTest {
@@ -32,6 +26,7 @@ public class BankTest {
         setUserID();
         bankEntryMessage(); // printing some start informations
         userChoiceMenu();
+        saveBankUsersToJson();
     }
 
     private void userChoiceMenu() {
@@ -79,7 +74,6 @@ public class BankTest {
                 case "exit":
                     if (confirmOperation()) {
                         quit = true;
-                        saveBankUsersToJson();
                     } else {
                         System.out.println("Operation aborted\n");
                         break;
@@ -324,10 +318,25 @@ public class BankTest {
     }
 
     private void setUserID() {
-        if (bankUsers.size() != 0) {
-            this.userID = bankUsers.size() + 1;
-        }
+        this.userID = bankUsers.entrySet().stream()
+                .map(x->x.getValue())
+                .map(x->x.getClientID())
+                .max((x1, x2) -> Integer.compare(x1, x2))
+                .get() + 1;
     }
+
+//    private void searchByName(){
+//        String tmpNameFirst;
+//        System.out.println("Account Holders First Name :: ");
+//        tmpNameFirst = input.nextLine();
+//
+//        HashMap<Integer, Account> collect =
+//        bankUsers
+//                .values()
+//                .stream()
+//                .filter(account -> tmpNameFirst.equals(account.getNameFirst()))
+//                .findAny();
+//    }
 
     public static void main(String[] args) {
         BankTest myBank = new BankTest();
