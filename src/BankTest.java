@@ -1,14 +1,11 @@
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-
 
 public class BankTest {
     BankTest() {
@@ -22,8 +19,9 @@ public class BankTest {
 
 
     private void startBankApplication() {
-        loadBankUsersFromJsontoHashMap();       //loads users from json to HashMap
-        setUserID();                            //protects overwriting userID
+        //isJsonFileEmpty();
+        loadBankUsersFromJsontoHashMap();       // loads users from json to HashMap
+        setUserID();                            // protects overwriting userID
         bankEntryMessage();                     // printing some start informations
         userChoiceMenu();                       // handle user commands
         saveBankUsersToJson();                  // saves users to from HashMap to json
@@ -192,7 +190,7 @@ public class BankTest {
         tmpNameLast = input.nextLine();
         System.out.println("Account Holders PESEL :: ");
         tmpPesel = input.nextLine();
-        while (tmpPesel.length() < 11) {
+        while (tmpPesel.length() != 11) {
             System.out.println("You have to enter an correct length!");
             tmpPesel = input.nextLine();
         }
@@ -353,18 +351,22 @@ public class BankTest {
         try (Reader reader = new FileReader("bank_users.json")) {
             bankUsers = gson.fromJson(reader, new TypeToken<HashMap<Integer, Account>>() {
             }.getType());
+        } catch (NoSuchElementException e) {
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private void setUserID() {
-        this.userID = bankUsers.entrySet().stream()
-                .map(x -> x.getValue())
-                .map(x -> x.getClientID())
-                .max((x1, x2) -> Integer.compare(x1, x2))
-                .get() + 1;
+        try {
+            this.userID = bankUsers.entrySet().stream()
+                    .map(x -> x.getValue())
+                    .map(x -> x.getClientID())
+                    .max((x1, x2) -> Integer.compare(x1, x2))
+                    .get() + 1;
+        }catch(NoSuchElementException e){
+        }
     }
 
 //    private void searchByName(){

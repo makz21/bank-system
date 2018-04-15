@@ -1,6 +1,12 @@
+//import com.google.gson.Gson;
+//import com.google.gson.reflect.TypeToken;
+//import java.io.FileReader;
+//import java.io.FileWriter;
+//import java.io.IOException;
+//import java.io.Reader;
 //import java.util.HashMap;
 //import java.util.Scanner;
-//
+//import java.util.stream.Collectors;
 //
 //public class Bank {
 //    Bank() {
@@ -8,18 +14,20 @@
 //
 //    private int userID = 0;
 //
-//
 //    Scanner input = new Scanner(System.in);
 //    HashMap<Integer, Account> bankUsers = new HashMap<>();
+//    Gson gson = new Gson();
+//
 //
 //    private void startBankApplication() {
-//        bankEntryMessage(); // printing some start informations
-//        userChoiceMenu();
-//        System.exit(0);
+//        loadBankUsersFromJsontoHashMap();       // loads users from json to HashMap
+//        setUserID();                            // protects overwriting userID
+//        bankEntryMessage();                     // printing some start informations
+//        userChoiceMenu();                       // handle user commands
+//        saveBankUsersToJson();                  // saves users to from HashMap to json
 //    }
 //
 //    private void userChoiceMenu() {
-//        // handle user commands
 //        boolean quit = false;
 //        String menuItem;
 //        do {
@@ -57,6 +65,9 @@
 //                case "transfer":
 //                    makeTransfer(); //transfer money
 //                    break;
+//                case "search":
+//                    searchMenu();
+//                    break;
 //                case "exit":
 //                    if (confirmOperation()) {
 //                        quit = true;
@@ -70,6 +81,48 @@
 //            }
 //        } while (!quit);
 //        System.out.println("Bye-bye!");
+//    }
+//
+//    private void searchMenu() {
+//        boolean quit = false;
+//        String menuItem;
+//        do {
+//            System.out.println("Enter the chosen criterion\n" +
+//                    "firstname/lastname/pesel/clientid/address\n");
+//            menuItem = input.nextLine();
+//            switch (menuItem.toLowerCase()) {
+//                case "firstname":
+//                    //search by first name
+//                    quit = true;
+//                    break;
+//                case "lastname":
+//                    //search by last name
+//                    quit = true;
+//                    break;
+//                case "pesel":
+//                    //search by pesel
+//                    quit = true;
+//                    break;
+//                case "clientid":
+//                    //search by ClientID
+//                    quit = true;
+//                    break;
+//                case "address":
+//                    //search by address
+//                    quit = true;
+//                    break;
+//                case "exit":
+//                    if (confirmOperation()) {
+//                        quit = true;
+//                    } else {
+//                        System.out.println("Operation aborted\n");
+//                        break;
+//                    }
+//                    break;
+//                default:
+//                    System.out.println("Invalid choice.\n");
+//            }
+//        } while (!quit);
 //    }
 //
 //    private boolean confirmOperation() {
@@ -117,6 +170,7 @@
 //                "delete - delete selected user\n" +
 //                "deposit - deposit funds into an account\n" +
 //                "withdraw - withdraw funds from an account \n" +
+//                "search - search clients after a given criterion \n" +
 //                "transfer - transfer funds between two accounts\n" +
 //                "exit - application closing command\n" +
 //                "=================================================================");
@@ -136,15 +190,24 @@
 //        tmpNameLast = input.nextLine();
 //        System.out.println("Account Holders PESEL :: ");
 //        tmpPesel = input.nextLine();
-//        System.out.println("Account Holders Adress :: ");
+//        while (tmpPesel.length() < 11) {
+//            System.out.println("You have to enter an correct length!");
+//            tmpPesel = input.nextLine();
+//        }
+//        System.out.println("Account Holders address :: ");
 //        tmpAdress = input.nextLine();
 //
 //        System.out.println("Opening Balance :: ");
+//        while (!input.hasNextDouble()) {
+//            System.out.println("You have to enter an correct amount!");
+//            input.next();
+//        }
 //        tmpBalance = input.nextDouble();
 //        input.nextLine();
 //
 //        if (confirmOperation()) {
-//            bankUsers.put(userID, (new Account(new Client(tmpNameFirst, tmpNameLast, tmpPesel, tmpAdress), userID, tmpBalance)));
+//            Account newUser = new Account(new Client(tmpNameFirst, tmpNameLast, tmpPesel, tmpAdress, userID), tmpBalance);
+//            bankUsers.put(userID, newUser);
 //            System.out.println("New client successfully added!");
 //            userID++;
 //        } else {
@@ -167,9 +230,6 @@
 //        int key = input.nextInt();
 //        input.nextLine();
 //        Account selectedUser = bankUsers.get(key);
-////        if (selectedUser == null) {
-////            return null;
-////        }
 //        return selectedUser;
 //    }
 //
@@ -278,6 +338,32 @@
 //        }
 //    }
 //
+//    private void saveBankUsersToJson() {
+//        try (FileWriter writer = new FileWriter("bank_users.json")) {
+//            gson.toJson(bankUsers, writer);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    private void loadBankUsersFromJsontoHashMap() {
+//        try (Reader reader = new FileReader("bank_users.json")) {
+//            bankUsers = gson.fromJson(reader, new TypeToken<HashMap<Integer, Account>>() {
+//            }.getType());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
+//
+//    private void setUserID() {
+//        this.userID = bankUsers.entrySet().stream()
+//                .map(x -> x.getValue())
+//                .map(x -> x.getClientID())
+//                .max((x1, x2) -> Integer.compare(x1, x2))
+//                .get() + 1;
+//    }
 //
 //    public static void main(String[] args) {
 //        Bank myBank = new Bank();
