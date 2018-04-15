@@ -1,8 +1,11 @@
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.function.Predicate;
 import java.io.*;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -15,11 +18,10 @@ public class BankTest {
 
     Scanner input = new Scanner(System.in);
     HashMap<Integer, Account> bankUsers = new HashMap<>();
-    Gson gson = new Gson();
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 
     private void startBankApplication() {
-        //isJsonFileEmpty();
         loadBankUsersFromJsontoHashMap();       // loads users from json to HashMap
         setUserID();                            // protects overwriting userID
         bankEntryMessage();                     // printing some start informations
@@ -92,7 +94,7 @@ public class BankTest {
             menuItem = input.nextLine();
             switch (menuItem.toLowerCase()) {
                 case "firstname":
-                    //search by first name
+                    searchByFirstName(); //search by first name
                     quit = true;
                     break;
                 case "lastname":
@@ -365,22 +367,23 @@ public class BankTest {
                     .map(x -> x.getClientID())
                     .max((x1, x2) -> Integer.compare(x1, x2))
                     .get() + 1;
-        }catch(NoSuchElementException e){
+        } catch (NoSuchElementException e) {
         }
     }
 
-//    private void searchByName(){
-//        String tmpNameFirst;
-//        System.out.println("Account Holders First Name :: ");
-//        tmpNameFirst = input.nextLine();
-//
-//        HashMap<Integer, Account> collect =
-//        bankUsers
-//                .values()
-//                .stream()
-//                .filter(account -> tmpNameFirst.equals(account.getNameFirst()))
-//                .findAny();
-//    }
+    private void searchByFirstName(){
+        String tmpNameFirst;
+        System.out.println("Account Holders First Name :: ");
+        tmpNameFirst = input.nextLine();
+
+        Map<Integer, Account> collect = bankUsers.entrySet()
+                .stream()
+                .filter(map -> tmpNameFirst.equals(map.getValue().getNameFirst()))
+                .collect(Collectors.toMap(map -> map.getKey(), map -> map.getValue()));
+        System.out.println(collect);
+
+    }
+
 
     public static void main(String[] args) {
         BankTest myBank = new BankTest();
