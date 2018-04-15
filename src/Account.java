@@ -7,7 +7,6 @@ public class Account
 
     private Client person;            // account holders client
     private double balance;           // current account balance
-    //private int clientID;      // account number
 
     // Constuctor for Objects of type account //
     Account( Client c_client, double c_balance)

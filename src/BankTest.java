@@ -2,8 +2,12 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.stream.Stream;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Comparator;
+import java.util.Collection;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -25,6 +29,7 @@ public class BankTest {
 
     private void startBankApplication() {
         loadBankUsersFromJsontoHashMap();
+        setUserID();
         bankEntryMessage(); // printing some start informations
         userChoiceMenu();
     }
@@ -67,6 +72,9 @@ public class BankTest {
                     break;
                 case "transfer":
                     makeTransfer(); //transfer money
+                    break;
+                case "search":
+                    //search by
                     break;
                 case "exit":
                     if (confirmOperation()) {
@@ -148,15 +156,23 @@ public class BankTest {
         tmpNameLast = input.nextLine();
         System.out.println("Account Holders PESEL :: ");
         tmpPesel = input.nextLine();
+        while (tmpPesel.length() < 11){
+            System.out.println("You have to enter an correct length!");
+            tmpPesel = input.nextLine();
+        }
         System.out.println("Account Holders Adress :: ");
         tmpAdress = input.nextLine();
 
         System.out.println("Opening Balance :: ");
+        while (!input.hasNextDouble()) {
+            System.out.println("You have to enter an correct amount!");
+            input.next();
+        }
         tmpBalance = input.nextDouble();
         input.nextLine();
 
         if (confirmOperation()) {
-           Account newUser = new Account(new Client(tmpNameFirst, tmpNameLast, tmpPesel, tmpAdress, userID), tmpBalance);
+            Account newUser = new Account(new Client(tmpNameFirst, tmpNameLast, tmpPesel, tmpAdress, userID), tmpBalance);
             bankUsers.put(userID, newUser);
             System.out.println("New client successfully added!");
             userID++;
@@ -307,6 +323,11 @@ public class BankTest {
 
     }
 
+    private void setUserID() {
+        if (bankUsers.size() != 0) {
+            this.userID = bankUsers.size() + 1;
+        }
+    }
 
     public static void main(String[] args) {
         BankTest myBank = new BankTest();
