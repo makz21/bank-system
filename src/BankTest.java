@@ -22,15 +22,14 @@ public class BankTest {
 
 
     private void startBankApplication() {
-        loadBankUsersFromJsontoHashMap();
-        setUserID();
-        bankEntryMessage(); // printing some start informations
-        userChoiceMenu();
-        saveBankUsersToJson();
+        loadBankUsersFromJsontoHashMap();       //loads users from json to HashMap
+        setUserID();                            //protects overwriting userID
+        bankEntryMessage();                     // printing some start informations
+        userChoiceMenu();                       // handle user commands
+        saveBankUsersToJson();                  // saves users to from HashMap to json
     }
 
     private void userChoiceMenu() {
-        // handle user commands
         boolean quit = false;
         String menuItem;
         do {
