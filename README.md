@@ -1,7 +1,7 @@
 # bank-system
 Bank managing application.
 
-The application is intended for bank employees. Work with the program takes place in text mode. User data stored in a file on the disk.
+The application is intended for bank employees. Work with the program takes place in text mode. User data stored in a json file on the disk.
 
 The program allows you to: 
 
