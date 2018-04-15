@@ -68,7 +68,7 @@ public class BankTest {
                     makeTransfer(); //transfer money
                     break;
                 case "search":
-                    //search by
+                    searchMenu();
                     break;
                 case "exit":
                     if (confirmOperation()) {
@@ -83,6 +83,48 @@ public class BankTest {
             }
         } while (!quit);
         System.out.println("Bye-bye!");
+    }
+
+    private void searchMenu() {
+        boolean quit = false;
+        String menuItem;
+        do {
+            System.out.println("Enter the chosen criterion\n" +
+                    "firstname/lastname/pesel/clientid/address\n");
+            menuItem = input.nextLine();
+            switch (menuItem.toLowerCase()) {
+                case "firstname":
+                    //search by first name
+                    quit = true;
+                    break;
+                case "lastname":
+                    //search by last name
+                    quit = true;
+                    break;
+                case "pesel":
+                    //search by pesel
+                    quit = true;
+                    break;
+                case "clientid":
+                    //search by ClientID
+                    quit = true;
+                    break;
+                case "address":
+                    //search by address
+                    quit = true;
+                    break;
+                case "exit":
+                    if (confirmOperation()) {
+                        quit = true;
+                    } else {
+                        System.out.println("Operation aborted\n");
+                        break;
+                    }
+                    break;
+                default:
+                    System.out.println("Invalid choice.\n");
+            }
+        } while (!quit);
     }
 
     private boolean confirmOperation() {
@@ -130,6 +172,7 @@ public class BankTest {
                 "delete - delete selected user\n" +
                 "deposit - deposit funds into an account\n" +
                 "withdraw - withdraw funds from an account \n" +
+                "search - search clients after a given criterion \n" +
                 "transfer - transfer funds between two accounts\n" +
                 "exit - application closing command\n" +
                 "=================================================================");
@@ -149,11 +192,11 @@ public class BankTest {
         tmpNameLast = input.nextLine();
         System.out.println("Account Holders PESEL :: ");
         tmpPesel = input.nextLine();
-        while (tmpPesel.length() < 11){
+        while (tmpPesel.length() < 11) {
             System.out.println("You have to enter an correct length!");
             tmpPesel = input.nextLine();
         }
-        System.out.println("Account Holders Adress :: ");
+        System.out.println("Account Holders address :: ");
         tmpAdress = input.nextLine();
 
         System.out.println("Opening Balance :: ");
@@ -318,8 +361,8 @@ public class BankTest {
 
     private void setUserID() {
         this.userID = bankUsers.entrySet().stream()
-                .map(x->x.getValue())
-                .map(x->x.getClientID())
+                .map(x -> x.getValue())
+                .map(x -> x.getClientID())
                 .max((x1, x2) -> Integer.compare(x1, x2))
                 .get() + 1;
     }
