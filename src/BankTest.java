@@ -378,10 +378,13 @@ public class BankTest {
 
         Map<Integer, Account> collect = bankUsers.entrySet()
                 .stream()
-                .filter(map -> tmpNameFirst.equals(map.getValue().getNameFirst()))
+                .filter(map -> tmpNameFirst.toUpperCase().equals(map.getValue().getNameFirst().toUpperCase()))
                 .collect(Collectors.toMap(map -> map.getKey(), map -> map.getValue()));
-        System.out.println(collect);
-
+        if(collect.isEmpty()){
+            System.out.println("Client not found");
+        }else{
+            System.out.println(collect);
+        }
     }
 
 
