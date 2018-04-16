@@ -90,27 +90,27 @@ public class BankTest {
         String menuItem;
         do {
             System.out.println("Enter the chosen criterion\n" +
-                    "firstname/lastname/pesel/clientid/address\n");
+                    "firstname || lastname || pesel || clientid || address\n");
             menuItem = input.nextLine();
             switch (menuItem.toLowerCase()) {
                 case "firstname":
-                    searchByFirstName(); //search by first name
+                    searchByFirstName();        //search by first name
                     quit = true;
                     break;
                 case "lastname":
-                    //search by last name
+                    searchByLastName();          //search by last name
                     quit = true;
                     break;
                 case "pesel":
-                    //search by pesel
+                    searchByPesel();             //search by pesel
                     quit = true;
                     break;
                 case "clientid":
-                    //search by ClientID
+                    searchByClientID();         //search by ClientID
                     quit = true;
                     break;
                 case "address":
-                    //search by address
+                    searchByAddress();          //search by address
                     quit = true;
                     break;
                 case "exit":
@@ -373,7 +373,7 @@ public class BankTest {
 
     private void searchByFirstName(){
         String tmpNameFirst;
-        System.out.println("Account Holders First Name :: ");
+        System.out.println("Account Holders First Name: ");
         tmpNameFirst = input.nextLine();
 
         Map<Integer, Account> collect = bankUsers.entrySet()
@@ -387,6 +387,78 @@ public class BankTest {
         }
     }
 
+    private void searchByLastName(){
+        String tmpNameLast;
+        System.out.println("Account Holders Last Name: ");
+        tmpNameLast = input.nextLine();
+
+        Map<Integer, Account> collect = bankUsers.entrySet()
+                .stream()
+                .filter(map -> tmpNameLast.toUpperCase().equals(map.getValue().getNameLast().toUpperCase()))
+                .collect(Collectors.toMap(map -> map.getKey(), map -> map.getValue()));
+        if(collect.isEmpty()){
+            System.out.println("Client not found");
+        }else{
+            System.out.println(collect);
+        }
+
+    }
+
+    private void searchByPesel(){
+        String tmpPesel;
+        System.out.println("Account Holders PESEL: ");
+        tmpPesel = input.nextLine();
+        if(tmpPesel.length() != 11){
+            System.out.println("Incorrect PESEL length");
+        }
+
+        Map<Integer, Account> collect = bankUsers.entrySet()
+                .stream()
+                .filter(map -> tmpPesel.toUpperCase().equals(map.getValue().getNumberPesel().toUpperCase()))
+                .collect(Collectors.toMap(map -> map.getKey(), map -> map.getValue()));
+        if(collect.isEmpty()){
+            System.out.println("Client not found");
+        }else{
+            System.out.println(collect);
+        }
+    }
+
+    public void searchByAddress(){
+        String tmpAdress;
+        System.out.println("Account Holders address: ");
+        tmpAdress = input.nextLine();
+
+        Map<Integer, Account> collect = bankUsers.entrySet()
+                .stream()
+                .filter(map -> tmpAdress.toUpperCase().equals(map.getValue().getClientAdress().toUpperCase()))
+                .collect(Collectors.toMap(map -> map.getKey(), map -> map.getValue()));
+        if(collect.isEmpty()){
+            System.out.println("Client not found");
+        }else{
+            System.out.println(collect);
+        }
+    }
+
+    public void searchByClientID(){
+        Integer tmpClientID;
+        System.out.println("Account Holders ClientID: ");
+        while (!input.hasNextInt()) {
+            System.out.println("You have to enter an correct amount!");
+            input.next();
+        }
+        tmpClientID = input.nextInt();
+        input.nextLine();
+
+        Map<Integer, Account> collect = bankUsers.entrySet()
+                .stream()
+                .filter(map -> tmpClientID.equals(map.getValue().getClientID()))
+                .collect(Collectors.toMap(map -> map.getKey(), map -> map.getValue()));
+        if(collect.isEmpty()){
+            System.out.println("Client not found");
+        }else{
+            System.out.println(collect);
+        }
+    }
 
     public static void main(String[] args) {
         BankTest myBank = new BankTest();

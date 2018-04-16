@@ -65,6 +65,14 @@ public class Account
         return person.getClientID();
     }
 
+    public String getNumberPesel() {
+        return person.getNumberPesel();
+    }
+
+    public String getClientAdress(){
+        return person.getClientAdress();
+    }
+
     public Client getClient()
     {
         return person;

@@ -39,6 +39,10 @@ public class Client {
         return clientAdress;
     }
 
+    public String getNumberPesel() {
+        return numberPesel;
+    }
+
     public int getClientID()
     {
         return clientID;
