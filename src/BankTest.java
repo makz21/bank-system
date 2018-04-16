@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import java.util.InputMismatchException;
 
 public class BankTest {
     BankTest() {
@@ -68,7 +69,12 @@ public class BankTest {
                     makeTransfer(); //transfer money
                     break;
                 case "search":
-                    searchMenu();
+                    if (confirmOperation()) {
+                        searchMenu();
+                    } else {
+                        System.out.println("Operation aborted\n");
+                        break;
+                    }
                     break;
                 case "exit":
                     if (confirmOperation()) {
@@ -89,7 +95,7 @@ public class BankTest {
         boolean quit = false;
         String menuItem;
         do {
-            System.out.println("Enter the chosen criterion\n" +
+            System.out.println("Enter the chosen criterion(for exit - type exit)\n" +
                     "firstname || lastname || pesel || clientid || address\n");
             menuItem = input.nextLine();
             switch (menuItem.toLowerCase()) {
@@ -186,26 +192,16 @@ public class BankTest {
 
         System.out.println("\nEnter information about the new user\n" +
                 "=================================================================");
-        System.out.println("Account Holders First Name :: ");
-        tmpNameFirst = input.nextLine();
-        System.out.println("Account Holders Last Name :: ");
-        tmpNameLast = input.nextLine();
-        System.out.println("Account Holders PESEL :: ");
-        tmpPesel = input.nextLine();
-        while (tmpPesel.length() != 11) {
-            System.out.println("You have to enter an correct length!");
-            tmpPesel = input.nextLine();
-        }
-        System.out.println("Account Holders address :: ");
-        tmpAdress = input.nextLine();
-
-        System.out.println("Opening Balance :: ");
-        while (!input.hasNextDouble()) {
-            System.out.println("You have to enter an correct amount!");
-            input.next();
-        }
-        tmpBalance = input.nextDouble();
-        input.nextLine();
+        System.out.println("Account Holders First Name ");
+        tmpNameFirst = getWordFromUser();
+        System.out.println("Account Holders Last Name ");
+        tmpNameLast = getWordFromUser();
+        System.out.println("Account Holders PESEL ");
+        tmpPesel = getPeselFromUser();
+        System.out.println("Account Holders address ");
+        tmpAdress = getAddressFromUser();
+        System.out.println("Opening Balance");
+        tmpBalance = getValidMoneyAmountFromUser();
 
         if (confirmOperation()) {
             Account newUser = new Account(new Client(tmpNameFirst, tmpNameLast, tmpPesel, tmpAdress, userID), tmpBalance);
@@ -229,6 +225,10 @@ public class BankTest {
     private Account getClientFromBase() {
         System.out.println("=================================================================\n" +
                 "Enter clientID number you want to select");
+        while (!input.hasNextInt()) {
+            System.out.println("You have to enter an correct amount(integer)!");
+            input.next();
+        }
         int key = input.nextInt();
         input.nextLine();
         Account selectedUser = bankUsers.get(key);
@@ -247,7 +247,6 @@ public class BankTest {
                 System.out.println("Client is not existing in base");
                 return;
             } else {
-
                 if (confirmOperation()) {
                     int key = selectedUser.getClientID();
                     bankUsers.remove(key);
@@ -261,7 +260,7 @@ public class BankTest {
 
     private void makeDeposit() {
         if (bankUsers.isEmpty()) {
-            System.out.println("You can not deposit funds, client base is empty!\n");
+            System.out.println("You can not deposit funds, client base is empty!");
         } else {
             if (confirmDisplayClients()) {
                 displayAllClients();
@@ -271,21 +270,20 @@ public class BankTest {
                 System.out.println("Client is not existing in base");
                 return;
             }
-            System.out.println("Enter amount you want to deposit\n");
-            double tmpAmount = input.nextDouble();
-            input.nextLine();
+            System.out.println("Enter amount you want to deposit");
+            double tmpAmount = getValidMoneyAmountFromUser();
             if (confirmOperation()) {
                 selectedUser.depositFunds(tmpAmount);
-                System.out.println("Deposit operation completed successfully\n");
+                System.out.println("Deposit operation completed successfully");
             } else {
-                System.out.println("Operation aborted\n");
+                System.out.println("Operation aborted");
             }
         }
     }
 
     private void makeWithdraw() {
         if (bankUsers.isEmpty()) {
-            System.out.println("You can not deposit funds, client base is empty!\n");
+            System.out.println("You can not deposit funds, client base is empty!");
         } else {
             if (confirmDisplayClients()) {
                 displayAllClients();
@@ -295,18 +293,17 @@ public class BankTest {
                 System.out.println("Client is not existing in base");
                 return;
             }
-            System.out.println("Enter amount you want to withdraw\n");
-            double tmpAmount = input.nextDouble();
-            input.nextLine();
+            System.out.println("Enter amount you want to withdraw");
+            double tmpAmount = getValidMoneyAmountFromUser();
             if (confirmOperation()) {
                 if (selectedUser.withdrawFunds(tmpAmount)) {
-                    System.out.println("Withdraw operation completed successfully\n");
+                    System.out.println("Withdraw operation completed successfully");
                 } else {
                     System.out.println("You can't withdraw: " + tmpAmount + "$ " +
-                            "You can withdraw max: " + selectedUser.getBalance() + "$\n");
+                            "You can withdraw max: " + selectedUser.getBalance() + "$");
                 }
             } else {
-                System.out.println("Operation aborted\n");
+                System.out.println("Operation aborted");
             }
         }
     }
@@ -320,15 +317,13 @@ public class BankTest {
                 displayAllClients();
             }
             Account sender = getClientFromBase();
-
             Account recipient = getClientFromBase();
 
             if (sender == null || recipient == null) {
                 System.out.println("Invalid sender or recipient");
             } else {
                 System.out.println("Enter the amount you want to transfer\n");
-                double tmpAmount = input.nextDouble();
-                input.nextLine();
+                double tmpAmount = getValidMoneyAmountFromUser();
                 if (sender.withdrawFunds(tmpAmount)) {
                     recipient.depositFunds(tmpAmount);
                     System.out.println("Transfer completed successfully");
@@ -374,7 +369,7 @@ public class BankTest {
     private void searchByFirstName(){
         String tmpNameFirst;
         System.out.println("Account Holders First Name: ");
-        tmpNameFirst = input.nextLine();
+        tmpNameFirst = getWordFromUser();
 
         Map<Integer, Account> collect = bankUsers.entrySet()
                 .stream()
@@ -390,7 +385,7 @@ public class BankTest {
     private void searchByLastName(){
         String tmpNameLast;
         System.out.println("Account Holders Last Name: ");
-        tmpNameLast = input.nextLine();
+        tmpNameLast = getWordFromUser();
 
         Map<Integer, Account> collect = bankUsers.entrySet()
                 .stream()
@@ -407,10 +402,7 @@ public class BankTest {
     private void searchByPesel(){
         String tmpPesel;
         System.out.println("Account Holders PESEL: ");
-        tmpPesel = input.nextLine();
-        if(tmpPesel.length() != 11){
-            System.out.println("Incorrect PESEL length");
-        }
+        tmpPesel = getPeselFromUser();
 
         Map<Integer, Account> collect = bankUsers.entrySet()
                 .stream()
@@ -443,7 +435,7 @@ public class BankTest {
         Integer tmpClientID;
         System.out.println("Account Holders ClientID: ");
         while (!input.hasNextInt()) {
-            System.out.println("You have to enter an correct amount!");
+            System.out.println("You have to enter an correct amount(integer)!");
             input.next();
         }
         tmpClientID = input.nextInt();
@@ -458,6 +450,64 @@ public class BankTest {
         }else{
             System.out.println(collect);
         }
+    }
+
+    private String getWordFromUser(){
+        String word;
+        do{
+            System.out.println("Please enter valid data(only letters): ");
+            word = input.nextLine().trim();
+        }while(!(word.matches("^[a-zA-Z]{2,}$")));
+        return word;
+    }
+
+    private String getWordsFromUser(){
+        String word;
+        do{
+            System.out.println("Please enter valid data(only letters, space between words expected) : ");
+            word = input.nextLine().trim();
+        }while(!(word.matches("^[a-zA-Z]{2,}([\\s][a-zA-Z]{2,})*$")));
+        return word;
+    }
+
+    private String getAddressFromUser(){
+        String word;
+        do{
+            System.out.println("Please enter valid data(letters and numbers, space  between words expected) : ");
+            word = input.nextLine().trim();
+        }while(!(word.matches("^[a-zA-Z0-9]{2,}([\\s][a-zA-Z0-9]{2,})*$")));
+        return word;
+    }
+
+    private String getPeselFromUser(){
+        String pesel;
+        do{
+            System.out.println("Please enter valid data... (11 numbers) : ");
+            pesel = input.nextLine().trim();
+        }while(!(pesel.matches("^[0-9]{11}$")));
+        return pesel;
+    }
+
+    private double getValidMoneyAmountFromUser(){
+        double amount = -1.0;
+        boolean isValid;
+
+        do{
+            isValid = true;
+            System.out.println("Enter amount of money:");
+            try{
+                amount = input.nextDouble();
+            } catch (InputMismatchException e){
+                System.out.println("\nInvalid value type. Amount of money must be a double value.");
+                isValid = false;
+            } finally {
+                input.nextLine();
+            }
+        } while(!isValid);
+
+        amount = Math.round(amount*100) / 100D; //rounds to 2 decimal places
+        return Math.abs(amount);
+
     }
 
     public static void main(String[] args) {
